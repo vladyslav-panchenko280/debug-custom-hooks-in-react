@@ -26,8 +26,6 @@ export function useCart() {
     return `Cart: ${total} items`;
   });
 
-  // BUG: Empty dependency array causes stale closure
-  // The 'items' value captured here never updates
   const addToCart = useCallback((pizza: Pizza) => {
     const existingItem = items.find((item) => item.pizza.id === pizza.id);
 
@@ -40,7 +38,7 @@ export function useCart() {
     } else {
       setItems([...items, { pizza, quantity: 1 }]);
     }
-  }, []); // BUG: Missing 'items' dependency!
+  }, [items]); 
 
   const removeFromCart = useCallback((pizzaId: number) => {
     setItems((prev) => prev.filter((item) => item.pizza.id !== pizzaId));
