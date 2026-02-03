@@ -1,4 +1,4 @@
-import { useState, useCallback, useDebugValue } from "react";
+import { useState, useCallback, useDebugValue, useMemo } from "react";
 import type { Pizza } from "./usePizzaMenu";
 
 export interface CartItem {
@@ -26,19 +26,24 @@ export function useCart() {
     return `Cart: ${total} items`;
   });
 
-  const addToCart = useCallback((pizza: Pizza) => {
-    const existingItem = items.find((item) => item.pizza.id === pizza.id);
+  const addToCart = useCallback(
+    (pizza: Pizza) => {
+      const existingItem = items.find((item) => item.pizza.id === pizza.id);
 
-    if (existingItem) {
-      setItems(
-        items.map((item) =>
-          item.pizza.id === pizza.id ? { ...item, quantity: item.quantity + 1 } : item
-        )
-      );
-    } else {
-      setItems([...items, { pizza, quantity: 1 }]);
-    }
-  }, [items]); 
+      if (existingItem) {
+        setItems(
+          items.map((item) =>
+            item.pizza.id === pizza.id
+              ? { ...item, quantity: item.quantity + 1 }
+              : item,
+          ),
+        );
+      } else {
+        setItems([...items, { pizza, quantity: 1 }]);
+      }
+    },
+    [items],
+  );
 
   const removeFromCart = useCallback((pizzaId: number) => {
     setItems((prev) => prev.filter((item) => item.pizza.id !== pizzaId));
@@ -49,7 +54,9 @@ export function useCart() {
       setItems((prev) => prev.filter((item) => item.pizza.id !== pizzaId));
     } else {
       setItems((prev) =>
-        prev.map((item) => (item.pizza.id === pizzaId ? { ...item, quantity } : item))
+        prev.map((item) =>
+          item.pizza.id === pizzaId ? { ...item, quantity } : item,
+        ),
       );
     }
   }, []);
@@ -58,8 +65,11 @@ export function useCart() {
     setItems([]);
   }, []);
 
-  // BUG: This recalculates on every render
-  const total = items.reduce((sum, item) => sum + item.pizza.price * item.quantity, 0);
+  const total = useMemo(
+    () =>
+      items.reduce((sum, item) => sum + item.pizza.price * item.quantity, 0),
+    [items],
+  );
 
   return {
     items,
