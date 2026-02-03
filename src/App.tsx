@@ -11,6 +11,7 @@ function App() {
 
   // Using localStorage to persist customer name
   const [customerName, setCustomerName] = useLocalStorage("customerName", "");
+  const [customerEmail, setCustomerEmail] = useLocalStorage("customerEmail", "");
   const [showCheckout, setShowCheckout] = useState(false);
 
   const handleCheckout = () => {
@@ -18,7 +19,7 @@ function App() {
   };
 
   const handleSubmitOrder = () => {
-    if (customerName.trim()) {
+    if (customerName.trim() && customerEmail.trim()) {
       submitOrder(customerName);
       clearCart();
       setShowCheckout(false);
@@ -30,7 +31,7 @@ function App() {
   };
 
   console.log("App rendered");
-  
+
   return (
     <div className="app">
       <header>
@@ -69,12 +70,18 @@ function App() {
                     value={customerName}
                     onChange={(e) => setCustomerName(e.target.value)}
                   />
+                  <input
+                    type="email"
+                    placeholder="Your email"
+                    value={customerEmail}
+                    onChange={(e) => setCustomerEmail(e.target.value)}
+                  />
                   <div className="checkout-actions">
                     <button onClick={() => setShowCheckout(false)}>Cancel</button>
                     <button
                       className="submit"
                       onClick={handleSubmitOrder}
-                      disabled={!customerName.trim()}
+                      disabled={!customerName.trim() || !customerEmail.trim()}
                     >
                       Place Order
                     </button>
