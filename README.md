@@ -48,16 +48,16 @@ npm run dev
 ## Tasks Checklist
 
 ### Part 1: Setup & Explore
-- [ ] Install React DevTools browser extension
-- [ ] Run the app with `npm run dev`
-- [ ] Open DevTools → Components tab
-- [ ] Find `useDebugValue` output for each hook
+- [ X ] Install React DevTools browser extension
+- [ X ] Run the app with `npm run dev`
+- [ X ] Open DevTools → Components tab
+- [ X ] Find `useDebugValue` output for each hook
 
 ### Part 2: StrictMode Investigation
-- [ ] Watch console on page load
-- [ ] Notice double effect execution
-- [ ] Try removing `<StrictMode>` from main.tsx
-- [ ] Compare behavior with/without StrictMode
+- [ X ] Watch console on page load
+- [ X ] Notice double effect execution
+- [ X ] Try removing `<StrictMode>` from main.tsx
+- [ X ] Compare behavior with/without StrictMode
 
 ### Part 3: Find & Fix Bugs
 - [ ] **Bug #1**: Add cleanup to usePizzaMenu

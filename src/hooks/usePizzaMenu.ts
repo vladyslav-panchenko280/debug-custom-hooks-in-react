@@ -31,7 +31,6 @@ const fetchPizzaMenu = (): Promise<Pizza[]> => {
  * Debug this hook using:
  * - React DevTools (check useDebugValue output)
  * - StrictMode double-invoke behavior
- * - Console warnings for state updates after unmount
  */
 export function usePizzaMenu() {
   const [pizzas, setPizzas] = useState<Pizza[]>([]);
@@ -42,17 +41,32 @@ export function usePizzaMenu() {
   useDebugValue(loading ? "Loading menu..." : `${pizzas.length} pizzas loaded`);
 
   useEffect(() => {
-    // BUG: No cleanup function - will cause issues in StrictMode
-    // BUG: No way to cancel if component unmounts during fetch
+    let cancelled = false; // AbortController simulation
+
+    console.log("Fetching pizza menu...");
+
     fetchPizzaMenu()
       .then((data) => {
-        setPizzas(data);
-        setLoading(false);
+        if (!cancelled) { 
+          console.log("Pizza menu fetched:", data.length, "pizzas");
+          setPizzas(data);
+          setLoading(false);
+        } else {
+          console.log("Fetch completed but component unmounted");
+        }
       })
       .catch((err) => {
-        setError(err.message);
-        setLoading(false);
+        if (!cancelled) {
+          setError(err.message);
+          setLoading(false);
+        }
       });
+
+    // Cleanup function - called on unmount
+    return () => {
+      cancelled = true;
+      console.log("Cleanup: cancelling fetch");
+    };
   }, []);
 
   return { pizzas, loading, error };

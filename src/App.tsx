@@ -29,6 +29,8 @@ function App() {
     resetOrder();
   };
 
+  console.log("App rendered");
+  
   return (
     <div className="app">
       <header>

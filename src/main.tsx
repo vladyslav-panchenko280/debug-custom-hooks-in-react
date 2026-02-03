@@ -8,9 +8,7 @@ import "./index.css";
  *
  * StrictMode does the following in development:
  * 1. Double-invokes components, effects, and reducers
- * 2. Warns about deprecated lifecycle methods
- * 3. Warns about legacy string ref usage
- * 4. Detects unexpected side effects
+ * 2. Detects unexpected side effects
  *
  * TASK: Try removing StrictMode and see how behavior changes
  */
