@@ -60,16 +60,15 @@ npm run dev
 - [ X ] Compare behavior with/without StrictMode
 
 ### Part 3: Find & Fix Bugs
-- [ ] **Bug #1**: Add cleanup to usePizzaMenu
-- [ ] **Bug #2**: Fix useCallback in useCart
-- [ ] **Bug #3**: Add missing dependency in useLocalStorage
-- [ ] **Bug #4**: Stabilize reference in usePizzaOrder
+- [ X ] **Bug #1**: Add cleanup to usePizzaMenu
+- [ X ] **Bug #2**: Fix useCallback in useCart
+- [ X ] **Bug #3**: Add missing dependency in useLocalStorage
+- [ X ] **Bug #4**: Stabilize reference in usePizzaOrder
 
 ### Part 4: Verify Fixes
-- [ ] No double fetches with StrictMode
-- [ ] Rapid add-to-cart works correctly
-- [ ] localStorage persists with correct key
-- [ ] No console spam from order hook
+- [ X ] No double fetches with StrictMode
+- [ X ] Rapid add-to-cart works correctly
+- [ X ] No console spam from order hook
 
 ## Learning Goals
 

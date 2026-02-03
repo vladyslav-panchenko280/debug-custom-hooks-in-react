@@ -7,6 +7,7 @@ function App() {
   const { pizzas, loading, error } = usePizzaMenu();
   const { items, addToCart, removeFromCart, updateQuantity, clearCart, total } =
     useCart();
+    
   const { orderStatus, submitOrder, resetOrder } = usePizzaOrder(items);
 
   // Using localStorage to persist customer name

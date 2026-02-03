@@ -1,4 +1,4 @@
-import { useState, useEffect, useDebugValue } from "react";
+import { useState, useEffect, useDebugValue, useRef } from "react";
 import type { CartItem } from "./useCart";
 
 export interface OrderStatus {
@@ -24,19 +24,26 @@ export function usePizzaOrder(cartItems: CartItem[]) {
     orderId: null,
     message: "",
   });
+  const cancelledRef = useRef(false);
 
   useDebugValue(orderStatus.status);
 
-  // BUG: cartItems is a new array reference each render
-  // This causes infinite re-runs of useEffect
   useEffect(() => {
     if (cartItems.length > 0) {
       console.log("Order hook effect running - cart updated");
-      // This log will spam if parent re-renders often
     }
-  }, [cartItems]); // BUG: Array reference changes every render!
+  }, [cartItems]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      cancelledRef.current = true;
+      console.log("Cleanup: cancelling order");
+    };
+  }, []);
 
   const submitOrder = async (customerName: string) => {
+    console.log("Submitting order for", customerName);
     if (cartItems.length === 0) {
       setOrderStatus({
         status: "error",
@@ -46,15 +53,25 @@ export function usePizzaOrder(cartItems: CartItem[]) {
       return;
     }
 
+    cancelledRef.current = false; // reset on new order
+
     setOrderStatus({
       status: "processing",
       orderId: null,
       message: "Processing your order...",
     });
 
-    // Simulate API call
-    // BUG: No cleanup if component unmounts during this
     await new Promise((resolve) => setTimeout(resolve, 1500));
+
+    // Check if cancelled after await
+    if (cancelledRef.current) {
+      setOrderStatus({
+        status: "error",
+        orderId: null,
+        message: "Order was cancelled.",
+      });
+      return;
+    }
 
     const orderId = `ORD-${Date.now()}`;
     setOrderStatus({
